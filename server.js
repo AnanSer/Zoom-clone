@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const server = require("http").Server(app);
+const io = require("socket.io")(server);
 const { v4: uuidV4 } = require("uuid");
 
 // Set EJS as the template engine
@@ -17,6 +18,12 @@ app.get("/", (req, res) => {
 // Render the room page
 app.get("/:room", (req, res) => {
   res.render("room", { roomId: req.params.room });
+});
+
+io.on("connection", (socket) => {
+  socket.on("join-room", () => {
+    console.log("alan joined");
+  });
 });
 
 // Start the server
